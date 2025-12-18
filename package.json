@@ -1,0 +1,67 @@
+{
+  "name": "@billdestein/better-frames",
+  "version": "1.0.0",
+  "description": "better-frames",
+  "homepage": "https://billdestein.github.io/better-frames/",
+  "source": "src/lib/Example.tsx",
+  "types": "dist/lib/Example.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "unpkg": "dist/index.umd.js",
+  "overrides": {
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "dev": "microbundle watch",
+    "build": "rm -rf dist && microbundle",
+    "build:docs": "BUILD_PATH='./docs' react-scripts build",
+    "eject": "react-scripts eject"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": ">=18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "autoprefixer": "^10.4.15",
+    "microbundle": "^0.15.1",
+    "postcss": "^8.4.28",
+    "prettier": "^3.0.2",
+    "prettier-plugin-tailwindcss": "^0.5.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.2.2"
+  },
+  "author": "Darren Cooney",
+  "license": "MIT",
+  "keywords": [
+    "npm better-frames",
+    "react",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/billdestein/better-frames.git"
+  },
+  "bugs": {
+    "url": "https://github.com/billdestein/better-frames/issues"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
