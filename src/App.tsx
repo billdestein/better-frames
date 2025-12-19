@@ -5,17 +5,17 @@ import { Iframe } from './Iframe'
 
 type Example = {
   name: string
-  element: () => React.JSX.Element
+  element: React.JSX.Element
 }
 
 const examples: Example[] = [
   {
     name: 'Add and remove frames',
-    element: AddRemove
+    element: <AddRemove/>
   },
   {
     name: 'Iframe',
-    element: Iframe
+    element: <Iframe/>
   }
 ]
 
@@ -41,22 +41,23 @@ const Option = styled.div`
     }
 `
 
-const Right = styled.div`
-      background-color: yellow;
-      flex-grow: 1;
-      height: 100%;
-  `
-
 function App() {
-  // const [ exampleNumber, setExampleNumber ] = useState<number>(0)
+  const [ example, setExample ] = useState<Example>(examples[0])
 
-  const onClick = () =>{
-    alert('Hello')
+  const onClick = (exampleName: string) =>{
+    console.log(`onClick: ${exampleName}`)
+    const example = examples.find(e => e.name == exampleName)
+    setExample(example as Example)
   }
 
   const renderOption = (example: Example) => {
     return (
-      <Option onClick={ onClick }>{example.name}</Option>
+      <Option
+        key = {example.name}
+        onClick={ () => onClick(example.name) }
+      >
+        {example.name}
+      </Option>
     )
   }
 
@@ -68,45 +69,12 @@ function App() {
     )
   }
 
-  const renderRight = () => {
-    return <Right>Right</Right>
-  }
-
   return (
     <Container>
       { renderLeft() }
-      { renderRight() }
+      { example.element }
     </Container>
   )
 }
 
 export default App
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react'
-// import Example from './lib/Example'
-//
-// function App() {
-//    return (
-//       <div className="container">
-//          <header className="py-5 border-b mb-5">
-//             <h1 className="mb-1">React NPM Starter</h1>
-//          </header>
-//          <div className="flex gap-2">
-//             <Example label="Link Button" url="https://github.com/dcooney" />
-//             <Example label="Form Button" />
-//          </div>
-//       </div>
-//    )
-// }
-//
-// export default App
