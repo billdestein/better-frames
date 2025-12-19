@@ -25,7 +25,7 @@ const Container = styled.div`
       height: 100vh;
 `
 
-const Left = styled.div`
+const LeftNav = styled.div`
     background-color: blue;
     color: white;
     height: 100%;
@@ -45,33 +45,29 @@ function App() {
   const [ example, setExample ] = useState<Example>(examples[0])
 
   const onClick = (exampleName: string) =>{
-    console.log(`onClick: ${exampleName}`)
     const example = examples.find(e => e.name == exampleName)
     setExample(example as Example)
   }
 
   const renderOption = (example: Example) => {
     return (
-      <Option
-        key = {example.name}
-        onClick={ () => onClick(example.name) }
-      >
+      <Option key = {example.name} onClick={ () => onClick(example.name) }>
         {example.name}
       </Option>
     )
   }
 
-  const renderLeft = () => {
+  const renderLeftNav = () => {
     return (
-      <Left>
+      <LeftNav>
         { examples.map(e => renderOption(e))}
-      </Left>
+      </LeftNav>
     )
   }
 
   return (
     <Container>
-      { renderLeft() }
+      { renderLeftNav() }
       { example.element }
     </Container>
   )
