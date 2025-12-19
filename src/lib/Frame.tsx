@@ -1,0 +1,649 @@
+import React from 'react'
+import { debounce } from 'lodash'
+import type { ReactElement } from 'react'
+import styled from 'styled-components'
+import Canvas from './Canvas'
+import type { Button, Geometry } from './types'
+import FrameHeader from './FrameHeader'
+
+enum Resizer {
+  NONE = 'none',
+  NW = 'nw',
+  N = 'n',
+  NE = 'ne',
+  W = 'w',
+  E = 'e',
+  SW = 'sw',
+  S = 's',
+  SE = 'se'
+}
+
+type Props = {
+  buttons: Button[]
+  canvas: Canvas
+  children: ReactElement
+  geometry: Geometry
+  isIframe?: boolean
+  onResize: (_geometry: Geometry) => void
+  title: string
+}
+
+//----------------------------------------------------------------------------------------------
+// Frame
+//----------------------------------------------------------------------------------------------
+const Frame: React.FunctionComponent<Props> = (props) => {
+  const {buttons, canvas, geometry, onResize, title } = props
+
+  const wrapperId = `${Math.random()}`
+  const bodyId = `${Math.random()}`
+  const headerHeight = 30
+  const thickness = 20
+  const thicknessPX = `${thickness}px`
+  const minusThicknessPX = `${-1 * thickness}px`
+  let mouseStartX: number = 0
+  let mouseStartY: number = 0
+  let resizer: Resizer = Resizer.NONE
+  let wrapperStartHeight: number = 0
+  let wrapperStartWidth: number = 0
+  let wrapperStartX: number = 0
+  let wrapperStartY: number = 0
+
+  //-----------------------------------------------------------------------------------------------
+  // dragPointerDown
+  //-----------------------------------------------------------------------------------------------
+  const dragPointerDown = (event: any): void => {
+    event.preventDefault()
+
+    const bodyElement = document.getElementById(bodyId)
+    if (!bodyElement) {
+      alert('cannot find bodyElement')
+      return
+    }
+
+    const canvasElement = document.getElementById(canvas.getId())
+    if (!canvasElement) {
+      alert('cannot find canvasElement')
+      return
+    }
+
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      alert('cannot find wrapperElement')
+      return
+    }
+
+    if (props.isIframe && props.isIframe === true ) {
+      bodyElement.style.display = 'none'
+    }
+
+    restack()
+
+    mouseStartX = event.clientX
+    mouseStartY = event.clientY
+
+    wrapperStartX = getLeft(wrapperElement)
+    wrapperStartY = getTop(wrapperElement)
+
+    document.addEventListener('pointermove', dragPointerMove, false)
+    document.addEventListener('pointerup', dragPointerUp, false)
+    document.addEventListener('pointercancel', dragPointerCancel, false)
+  }
+
+  //-----------------------------------------------------------------------------------------------
+  // dragPointerMove
+  //-----------------------------------------------------------------------------------------------
+  const dragPointerMove = (event: any): void => {
+    event.preventDefault()
+
+    const canvasElement = document.getElementById(canvas.getId())
+    if (!canvasElement) {
+      alert('cannot find canvasElement')
+      return
+    }
+
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      alert('cannot find wrapperElement')
+      return
+    }
+
+    const mouseX: number = event.clientX
+    const mouseY: number = event.clientY
+
+    const newWrapperX = wrapperStartX + (mouseX - mouseStartX)
+    const newWrapperY = wrapperStartY + (mouseY - mouseStartY)
+
+    setLeft(wrapperElement, newWrapperX)
+    setTop(wrapperElement, newWrapperY)
+
+    resize()
+  }
+
+  //-----------------------------------------------------------------------------------------------
+  // dragPointerUp
+  //-----------------------------------------------------------------------------------------------
+  const dragPointerUp = (event: any): void => {
+    event.preventDefault()
+
+    const bodyElement = document.getElementById(bodyId)
+    if (!bodyElement) {
+      alert('cannot find bodyElement')
+      return
+    }
+
+    const canvasElement = document.getElementById(canvas.getId())
+    if (!canvasElement) {
+      alert('cannot find canvasElement')
+      return
+    }
+
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      alert('cannot find wrapperElement')
+      return
+    }
+
+    if (props.isIframe && props.isIframe === true ) {
+      bodyElement.style.display = 'block'
+    }
+
+    document.removeEventListener('pointermove', dragPointerMove, false)
+    document.removeEventListener('pointerup', dragPointerUp, false)
+    document.removeEventListener('pointercancel', dragPointerCancel, false)
+  }
+
+  //-----------------------------------------------------------------------------------------------
+  // dragPointerCancel
+  //-----------------------------------------------------------------------------------------------
+  const dragPointerCancel = (event: any): void => {
+    event.preventDefault()
+
+    const bodyElement = document.getElementById(bodyId)
+    if (!bodyElement) {
+      alert('cannot find bodyElement')
+      return
+    }
+
+    const canvasElement = document.getElementById(canvas.getId())
+    if (!canvasElement) {
+      alert('cannot find canvasElement')
+      return
+    }
+
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      alert('cannot find wrapperElement')
+      return
+    }
+
+    if (props.isIframe && props.isIframe === true ) {
+      bodyElement.style.display = 'block'
+    }
+
+    document.removeEventListener('pointermove', dragPointerMove, false)
+    document.removeEventListener('pointerup', dragPointerUp, false)
+    document.removeEventListener('pointercancel', dragPointerCancel, false)
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // getHeight
+  //----------------------------------------------------------------------------------------------
+  const getHeight = (element: any): number => {
+    const computedStyle = window.getComputedStyle(element)
+    return parseInt(computedStyle.height.replace('.px', ''), 10)
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // getWidth
+  //----------------------------------------------------------------------------------------------
+  const getWidth = (element: any): number => {
+    const computedStyle = window.getComputedStyle(element)
+    return parseInt(computedStyle.width.replace('.px', ''), 10)
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // getLeft
+  //----------------------------------------------------------------------------------------------
+  const getLeft = (element: any): number => {
+    const computedStyle = window.getComputedStyle(element)
+    return parseInt(computedStyle.left.replace('.px', ''), 10)
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // getTop
+  //----------------------------------------------------------------------------------------------
+  const getTop = (element: any): number => {
+    const computedStyle = window.getComputedStyle(element)
+    return parseInt(computedStyle.top.replace('.px', ''), 10)
+  }
+
+  //-----------------------------------------------------------------------------------------------
+  // resize
+  //-----------------------------------------------------------------------------------------------
+  const resize = (): any => {
+    if (!onResize) {
+      return
+    }
+
+    const debouncedFunc = debounce(() => {
+      onResize(geometry)
+    }, 200)
+
+    debouncedFunc()
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // resizePointerDown
+  //----------------------------------------------------------------------------------------------
+  const resizePointerDown = (event: any, resizerArg: Resizer): void => {
+    event.preventDefault()
+
+    const bodyElement = document.getElementById(bodyId)
+    if (!bodyElement) {
+      alert('cannot find bodyElement')
+      return
+    }
+
+    const canvasElement = document.getElementById(canvas.getId())
+    if (!canvasElement) {
+      alert('cannot find canvasElement')
+      return
+    }
+
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      alert('cannot find wrapperElement')
+      return
+    }
+
+    if (props.isIframe && props.isIframe === true ) {
+      bodyElement.style.display = 'none'
+    }
+
+    resizer = resizerArg
+
+    mouseStartX = event.clientX
+    mouseStartY = event.clientY
+
+    wrapperStartHeight = getHeight(wrapperElement)
+    wrapperStartWidth = getWidth(wrapperElement)
+
+    wrapperStartX = getLeft(wrapperElement)
+    wrapperStartY = getTop(wrapperElement)
+
+    document.addEventListener('pointermove', resizePointerMove, false)
+    document.addEventListener('pointerup', resizePointerUp, false)
+    document.addEventListener('pointercancel', resizePointerCancel, false)
+  }
+
+  //-----------------------------------------------------------------------------------------------
+  // resizePointerMove
+  //-----------------------------------------------------------------------------------------------
+  const resizePointerMove = (event: any): void => {
+    event.preventDefault()
+
+    const canvasElement = document.getElementById(canvas.getId())
+    if (!canvasElement) {
+      alert('cannot find canvasElement')
+      return
+    }
+
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      alert('cannot find wrapperElement')
+      return
+    }
+
+    const mouseX = event.clientX
+    const mouseY = event.clientY
+
+    let top = wrapperElement.offsetTop
+    let left = wrapperElement.offsetLeft
+    let height = wrapperElement.offsetHeight
+    let width = wrapperElement.offsetWidth
+
+    switch (resizer) {
+      case Resizer.NW: {
+        top = wrapperStartY + (mouseY - mouseStartY)
+        height = wrapperStartHeight - (mouseY - mouseStartY)
+        left = wrapperStartX + (mouseX - mouseStartX)
+        width = wrapperStartWidth - (mouseX - mouseStartX)
+        break
+      }
+      case Resizer.N: {
+        top = wrapperStartY + (mouseY - mouseStartY)
+        height = wrapperStartHeight - (mouseY - mouseStartY)
+        break
+      }
+      case Resizer.NE: {
+        top = wrapperStartY + (mouseY - mouseStartY)
+        height = wrapperStartHeight - (mouseY - mouseStartY)
+        width = wrapperStartWidth + (mouseX - mouseStartX)
+        break
+      }
+      case Resizer.W: {
+        left = wrapperStartX + (mouseX - mouseStartX)
+        width = wrapperStartWidth - (mouseX - mouseStartX)
+        break
+      }
+      case Resizer.E: {
+        width = wrapperStartWidth + (mouseX - mouseStartX)
+        break
+      }
+      case Resizer.SW: {
+        height = wrapperStartHeight + (mouseY - mouseStartY)
+        left = wrapperStartX + (mouseX - mouseStartX)
+        width = wrapperStartWidth - (mouseX - mouseStartX)
+        break
+      }
+      case Resizer.S: {
+        height = wrapperStartHeight + (mouseY - mouseStartY)
+        break
+      }
+      case Resizer.SE: {
+        height = wrapperStartHeight + (mouseY - mouseStartY)
+        width = wrapperStartWidth + (mouseX - mouseStartX)
+        break
+      }
+      default: {
+        break
+      }
+    }
+
+    setHeight(wrapperElement, height)
+    setWidth(wrapperElement, width)
+    setLeft(wrapperElement, left)
+    setTop(wrapperElement, top)
+
+    resize()
+  }
+
+  //-----------------------------------------------------------------------------------------------
+  // resizePointerUp
+  //-----------------------------------------------------------------------------------------------
+  const resizePointerUp = (event: any): void => {
+    event.preventDefault()
+
+    const bodyElement = document.getElementById(bodyId)
+    if (!bodyElement) {
+      alert('cannot find bodyElement')
+      return
+    }
+
+    const canvasElement = document.getElementById(canvas.getId())
+    if (!canvasElement) {
+      alert('cannot find canvasElement')
+      return
+    }
+
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      alert('cannot find wrapperElement')
+      return
+    }
+
+    if (props.isIframe && props.isIframe === true) {
+      bodyElement.style.display = 'block'
+    }
+
+    document.removeEventListener('pointermove', resizePointerMove, false)
+    document.removeEventListener('pointerup', resizePointerUp, false)
+    document.removeEventListener('pointercancel', resizePointerCancel, false)
+  }
+
+  //-----------------------------------------------------------------------------------------------
+  // resizePointerCancel
+  //-----------------------------------------------------------------------------------------------
+  const resizePointerCancel = (event: any): void => {
+    event.preventDefault()
+
+    const bodyElement = document.getElementById(bodyId)
+    if (!bodyElement) {
+      alert('cannot find bodyElement')
+      return
+    }
+
+    const canvasElement = document.getElementById(canvas.getId())
+    if (!canvasElement) {
+      alert('cannot find canvasElement')
+      return
+    }
+
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      alert('cannot find wrapperElement')
+      return
+    }
+
+    if (props.isIframe && props.isIframe === true) {
+      bodyElement.style.display = 'block'
+    }
+
+    document.removeEventListener('pointermove', resizePointerMove, false)
+    document.removeEventListener('pointerup', resizePointerUp, false)
+    document.removeEventListener('pointercancel', resizePointerCancel, false)
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // restack
+  //----------------------------------------------------------------------------------------------
+  const restack = (): void => {
+    const wrapperElement = document.getElementById(wrapperId)
+    if (!wrapperElement) {
+      return
+    }
+
+    canvas.lastZ += 1
+    setZ(wrapperElement, canvas.lastZ)
+
+    let bodyCoverElements = document.querySelectorAll('.BodyCover')
+    bodyCoverElements.forEach((e) => (e as any).style.display='block')
+
+    bodyCoverElements = wrapperElement.querySelectorAll('.BodyCover')
+    bodyCoverElements.forEach((e) => (e as any).style.display='none')
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // setHeight
+  //----------------------------------------------------------------------------------------------
+  const setHeight = (element: any, height: number): void => {
+    geometry.height = height
+    // eslint-disable-next-line no-param-reassign
+    element.style.height = `${height}px`
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // setLeft
+  //----------------------------------------------------------------------------------------------
+  const setLeft = (element: any, left: number): void => {
+    geometry.x = left
+    // eslint-disable-next-line no-param-reassign
+    element.style.left = `${left}px`
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // setTop
+  //----------------------------------------------------------------------------------------------
+  const setTop = (element: any, top: number): void => {
+    geometry.y = top
+    // eslint-disable-next-line no-param-reassign
+    element.style.top = `${top}px`
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // setWidth
+  //----------------------------------------------------------------------------------------------
+  const setWidth = (element: any, width: number): void => {
+    geometry.width = width
+    // eslint-disable-next-line no-param-reassign
+    element.style.width = `${width}px`
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // setZ
+  //----------------------------------------------------------------------------------------------
+  const setZ = (element: any, z: number): void => {
+    geometry.z = z
+    // eslint-disable-next-line no-param-reassign
+    element.style.zIndex = `${z}`
+  }
+
+  //----------------------------------------------------------------------------------------------
+  // styles
+  //----------------------------------------------------------------------------------------------
+  const Wrapper = styled.div`
+    background-color: #EEEEEE;
+    box-sizing: border-box;
+    border: 5px solid white;
+    color: #222222;
+    outline: 1px solid black;
+    height: ${geometry.height}px;
+    left: ${geometry.x}px;
+    position: absolute;
+    top: ${geometry.y}px;
+    width: ${geometry.width}px;
+    z-index: ${geometry.z};
+  `
+
+  const Content = styled.div`
+    display: flex;
+    flex-flow: column;
+    position: relative;
+    height: 100%;
+  `
+
+  const FrameBody = styled.div`
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  `
+
+  const BodyCover = styled.div`
+    height: ${geometry.height}px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: ${geometry.width}px;
+  `
+
+  const NW = styled.div`
+    position: absolute;
+    cursor: nwse-resize;
+    top: ${minusThicknessPX};
+    left: ${minusThicknessPX};
+    height: ${thicknessPX};
+    width: ${thicknessPX};
+    z-index: 2;
+  `
+
+  const N = styled.div`
+    position: absolute;
+    cursor: ns-resize;
+    top: ${minusThicknessPX};
+    left: 0;
+    height: ${thicknessPX};
+    width: 100%;
+    z-index: 2;
+  `
+
+  const NE = styled.div`
+    position: absolute;
+    cursor: nesw-resize;
+    top: ${minusThicknessPX};
+    left: 100%;
+    height: ${thicknessPX};
+    width: ${thicknessPX};
+    z-index: 2;
+  `
+
+  const W = styled.div`
+    position: absolute;
+    cursor: ew-resize;
+    top: 0;
+    left: ${minusThicknessPX};
+    height: 100%;
+    width: ${thicknessPX};
+    z-index: 2;
+  `
+
+  const E = styled.div`
+    position: absolute;
+    cursor: ew-resize;
+    top: 0;
+    left: 100%;
+    height: 100%;
+    width: ${thicknessPX};
+    z-index: 2;
+  `
+
+  const SW = styled.div`
+    position: absolute;
+    cursor: nesw-resize;
+    top: 100%;
+    left: ${minusThicknessPX};
+    height: ${thicknessPX};
+    width: ${thicknessPX};
+    z-index: 2;
+  `
+
+  const S = styled.div`
+    position: absolute;
+    cursor: ns-resize;
+    top: 100%;
+    left: 0;
+    height: ${thicknessPX};
+    width: 100%;
+    z-index: 2;
+  `
+
+  const SE = styled.div`
+    position: absolute;
+    cursor: nwse-resize;
+    top: 100%;
+    left: 100%;
+    height: ${thicknessPX};
+    width: ${thicknessPX};
+    z-index: 2;
+  `
+
+  //----------------------------------------------------------------------------------------------
+  // render
+  //----------------------------------------------------------------------------------------------
+  const { children } = props
+
+  const renderBodyCover = () : React.JSX.Element | null => {
+    if (props.isIframe && props.isIframe === true ) {
+      return (<BodyCover className={'BodyCover'}/>)
+    } else {
+      return null
+    }
+  }
+
+  return (
+    <Wrapper id={wrapperId}>
+      <Content>
+        <NW role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.NW)} />
+        <N role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.N)} />
+        <NE role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.NE)} />
+        <W role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.W)} />
+        <E role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.E)} />
+        <SW role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.SW)} />
+        <S role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.S)} />
+        <SE role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.SE)} />
+        <FrameHeader
+          buttons={buttons}
+          canvas={canvas}
+          height={headerHeight}
+          onMouseDown={dragPointerDown}
+          title={title}
+        />
+        <FrameBody id={bodyId} onMouseDown={restack}>
+          <>{children}</>
+          { renderBodyCover() }
+        </FrameBody>
+      </Content>
+    </Wrapper>
+  )
+}
+
+export default Frame
