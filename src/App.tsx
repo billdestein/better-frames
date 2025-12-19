@@ -1,23 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { AddRemove } from './examples/AddRemove'
-import { Iframe } from './examples/Iframe'
-
-type Example = {
-  name: string
-  element: React.JSX.Element
-}
-
-const examples: Example[] = [
-  {
-    name: 'Add and remove frames',
-    element: <AddRemove/>
-  },
-  {
-    name: 'Iframe',
-    element: <Iframe/>
-  }
-]
+import { Example, Left } from './Left'
 
 const Container = styled.div`
       display: flex;
@@ -25,50 +8,31 @@ const Container = styled.div`
       height: 100vh;
 `
 
-const LeftNav = styled.div`
+const LeftDiv = styled.div`
     background-color: blue;
     color: white;
     height: 100%;
 `
 
-const Option = styled.div`
-    color: white;
-    padding: 10px 20px 10px 10px;
-    &:hover {
-        background-color: royalblue;
-        cursor: pointer;
-        width: 100%;
-    }
+const RightDiv = styled.div`
+    background-color: white;
+    color: black;
+    height: 100%;
 `
 
 function App() {
-  const [ example, setExample ] = useState<Example>(examples[0])
-
-  const onClick = (exampleName: string) =>{
-    const example = examples.find(e => e.name == exampleName)
-    setExample(example as Example)
-  }
-
-  const renderOption = (example: Example) => {
-    return (
-      <Option key = {example.name} onClick={ () => onClick(example.name) }>
-        {example.name}
-      </Option>
-    )
-  }
-
-  const renderLeftNav = () => {
-    return (
-      <LeftNav>
-        { examples.map(e => renderOption(e))}
-      </LeftNav>
-    )
+  const exampleSelected = (example: Example) => {
+    alert('exampleSelected')
+    console.log('exampleSelected')
+    console.log(JSON.stringify(example))
   }
 
   return (
     <Container>
-      { renderLeftNav() }
-      { example.element }
+      <LeftDiv>
+        <Left exampleSelected={exampleSelected}/>
+      </LeftDiv>
+      <RightDiv>right</RightDiv>
     </Container>
   )
 }
