@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { AddRemove } from './AddRemove'
-import { Iframe } from './Iframe'
+import { AddRemove } from './examples/AddRemove'
+import { Iframe } from './examples/Iframe'
 
 type Example = {
   name: string
