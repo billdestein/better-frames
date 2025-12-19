@@ -33,7 +33,7 @@ const LeftNav = styled.div`
 
 const Option = styled.div`
     color: white;
-    padding: 10px;
+    padding: 10px 20px 10px 10px;
     &:hover {
         background-color: royalblue;
         cursor: pointer;
