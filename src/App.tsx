@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Example, Left } from './Left'
+import { Example } from './types'
+import { Left } from './Left'
+import { Right } from './Right'
 
 const Container = styled.div`
       display: flex;
@@ -21,9 +23,11 @@ const RightDiv = styled.div`
 `
 
 function App() {
+  const [ example, setExample ] = useState<Example | null>(null)
+
   const exampleSelected = (example: Example) => {
+    setExample(example)
     alert('exampleSelected')
-    console.log('exampleSelected')
     console.log(JSON.stringify(example))
   }
 
@@ -32,7 +36,9 @@ function App() {
       <LeftDiv>
         <Left exampleSelected={exampleSelected}/>
       </LeftDiv>
-      <RightDiv>right</RightDiv>
+      <RightDiv>
+        <Right example={example}/>
+      </RightDiv>
     </Container>
   )
 }
