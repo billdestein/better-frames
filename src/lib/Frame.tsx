@@ -31,29 +31,99 @@ const BodyCover = styled.div<BodyCoverProps>`
 `
 
 const Content = styled.div`
-  display: flex;
-  flex-flow: column;
-  position: relative;
-  height: 100%;
+    display: flex;
+    flex-flow: column;
+    position: relative;
+    height: 100%;
 `
 
 const FrameBody = styled.div`
     flex: 1;
     overflow: hidden;
     position: relative;
-  `
+`
 
-interface NWProps {
+interface DivProps {
   readonly $minusThicknessPX: string
   readonly $thicknessPX: string
 }
 
 
-const NW = styled.div<NWProps>`
+const NW = styled.div<DivProps>`
     position: absolute;
     cursor: nwse-resize;
     top: ${props => props.$minusThicknessPX};
     left: ${props => props.$minusThicknessPX};
+    height: ${props => props.$thicknessPX};
+    width: ${props => props.$thicknessPX};
+    z-index: 2;
+`
+
+const N = styled.div<DivProps>`
+    position: absolute;
+    cursor: ns-resize;
+    top: ${props => props.$minusThicknessPX};
+    left: 0;
+    height: ${props => props.$thicknessPX};
+    width: 100%;
+    z-index: 2;
+`
+
+const NE = styled.div<DivProps>`
+    position: absolute;
+    cursor: nesw-resize;
+    top: ${props => props.$minusThicknessPX};
+    left: 100%;
+    height: ${props => props.$thicknessPX};
+    width: ${props => props.$thicknessPX};
+    z-index: 2;
+`
+
+const W = styled.div<DivProps>`
+    position: absolute;
+    cursor: ew-resize;
+    top: 0;
+    left: ${props => props.$minusThicknessPX};
+    height: 100%;
+    width: ${props => props.$thicknessPX};
+    z-index: 2;
+`
+
+const E = styled.div<DivProps>`
+    position: absolute;
+    cursor: ew-resize;
+    top: 0;
+    left: 100%;
+    height: 100%;
+    width: ${props => props.$thicknessPX};
+    z-index: 2;
+`
+
+const SW = styled.div<DivProps>`
+    position: absolute;
+    cursor: nesw-resize;
+    top: 100%;
+    left: ${props => props.$minusThicknessPX};
+    height: ${props => props.$thicknessPX};
+    width: ${props => props.$thicknessPX};
+    z-index: 2;
+`
+
+const S = styled.div<DivProps>`
+    position: absolute;
+    cursor: ns-resize;
+    top: 100%;
+    left: 0;
+    height: ${props => props.$thicknessPX};
+    width: 100%;
+    z-index: 2;
+`
+
+const SE = styled.div<DivProps>`
+    position: absolute;
+    cursor: nwse-resize;
+    top: 100%;
+    left: 100%;
     height: ${props => props.$thicknessPX};
     width: ${props => props.$thicknessPX};
     z-index: 2;
@@ -547,88 +617,6 @@ const Frame: React.FunctionComponent<Props> = (props) => {
     element.style.zIndex = `${z}`
   }
 
-  //----------------------------------------------------------------------------------------------
-  // styles
-  //----------------------------------------------------------------------------------------------
-  // const NW = styled.div`
-  //   position: absolute;
-  //   cursor: nwse-resize;
-  //   top: ${minusThicknessPX};
-  //   left: ${minusThicknessPX};
-  //   height: ${thicknessPX};
-  //   width: ${thicknessPX};
-  //   z-index: 2;
-  // `
-
-  const N = styled.div`
-    position: absolute;
-    cursor: ns-resize;
-    top: ${minusThicknessPX};
-    left: 0;
-    height: ${thicknessPX};
-    width: 100%;
-    z-index: 2;
-  `
-
-  const NE = styled.div`
-    position: absolute;
-    cursor: nesw-resize;
-    top: ${minusThicknessPX};
-    left: 100%;
-    height: ${thicknessPX};
-    width: ${thicknessPX};
-    z-index: 2;
-  `
-
-  const W = styled.div`
-    position: absolute;
-    cursor: ew-resize;
-    top: 0;
-    left: ${minusThicknessPX};
-    height: 100%;
-    width: ${thicknessPX};
-    z-index: 2;
-  `
-
-  const E = styled.div`
-    position: absolute;
-    cursor: ew-resize;
-    top: 0;
-    left: 100%;
-    height: 100%;
-    width: ${thicknessPX};
-    z-index: 2;
-  `
-
-  const SW = styled.div`
-    position: absolute;
-    cursor: nesw-resize;
-    top: 100%;
-    left: ${minusThicknessPX};
-    height: ${thicknessPX};
-    width: ${thicknessPX};
-    z-index: 2;
-  `
-
-  const S = styled.div`
-    position: absolute;
-    cursor: ns-resize;
-    top: 100%;
-    left: 0;
-    height: ${thicknessPX};
-    width: 100%;
-    z-index: 2;
-  `
-
-  const SE = styled.div`
-    position: absolute;
-    cursor: nwse-resize;
-    top: 100%;
-    left: 100%;
-    height: ${thicknessPX};
-    width: ${thicknessPX};
-    z-index: 2;
-  `
 
   //----------------------------------------------------------------------------------------------
   // render
@@ -652,13 +640,49 @@ const Frame: React.FunctionComponent<Props> = (props) => {
           $thicknessPX={thicknessPX}
           $minusThicknessPX={minusThicknessPX}
         />
-        <N role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.N)} />
-        <NE role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.NE)} />
-        <W role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.W)} />
-        <E role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.E)} />
-        <SW role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.SW)} />
-        <S role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.S)} />
-        <SE role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.SE)} />
+        <N
+          role="button"
+          onPointerDown={(e) => resizePointerDown(e, Resizer.N)}
+          $thicknessPX={thicknessPX}
+          $minusThicknessPX={minusThicknessPX}
+        />
+        <NE
+          role="button"
+          onPointerDown={(e) => resizePointerDown(e, Resizer.NE)}
+          $thicknessPX={thicknessPX}
+          $minusThicknessPX={minusThicknessPX}
+        />
+        <W
+          role="button"
+          onPointerDown={(e) => resizePointerDown(e, Resizer.W)}
+          $thicknessPX={thicknessPX}
+          $minusThicknessPX={minusThicknessPX}
+        />
+        <E
+          role="button"
+          onPointerDown={(e) => resizePointerDown(e, Resizer.E)}
+          $thicknessPX={thicknessPX}
+          $minusThicknessPX={minusThicknessPX}
+        />
+        <SW
+          role="button"
+          onPointerDown={(e) => resizePointerDown(e, Resizer.SW)}
+          $thicknessPX={thicknessPX}
+          $minusThicknessPX={minusThicknessPX}
+        />
+        <S
+          role="button"
+          onPointerDown={(e) => resizePointerDown(e, Resizer.S)}
+          $thicknessPX={thicknessPX}
+          $minusThicknessPX={minusThicknessPX}
+        />
+        <SE
+          role="button"
+          onPointerDown={(e) => resizePointerDown(e, Resizer.SE)}
+          $thicknessPX={thicknessPX}
+          $minusThicknessPX={minusThicknessPX}
+        />
+
         <FrameHeader
           buttons={buttons}
           canvas={canvas}
