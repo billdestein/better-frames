@@ -21,7 +21,6 @@ const RightDiv = styled.div`
     color: black;
     flex-grow: 1;
     height: 100%;
-    width: 100%;
 `
 
 function App() {
