@@ -11,9 +11,12 @@ const Container = styled.div`
 `
 
 const LeftDiv = styled.div`
-    background-color: blue;
-    color: white;
     height: 100%;
+`
+
+const MiddleDiv = styled.div`
+    background-color: tan;
+    width: 30%;
 `
 
 const RightDiv = styled.div`
@@ -36,6 +39,9 @@ function App() {
       <LeftDiv>
         <Left exampleSelected={exampleSelected}/>
       </LeftDiv>
+      <MiddleDiv>
+        Hello
+      </MiddleDiv>
       <RightDiv>
         <Right example={example}/>
       </RightDiv>

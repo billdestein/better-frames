@@ -16,12 +16,13 @@ const examples: Example[] = [
 ]
 
 const LeftNav = styled.div`
-    background-color: blue;
+    background-color: midnightblue;
     color: white;
     height: 100%;
 `
 
 const Option = styled.div`
+    border-bottom: 1px solid white;
     color: white;
     padding: 10px 20px 10px 10px;
     &:hover {
