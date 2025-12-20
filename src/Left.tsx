@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import { AddRemove } from './examples/AddRemove'
+import { MoveAndResize } from './examples/MoveAndResize'
 import { Iframe } from './examples/Iframe'
 import { Example } from './types'
 
 const examples: Example[] = [
   {
-    name: 'Add and remove frames',
-    element: <AddRemove/>
+    name: 'Move and resize',
+    element: <MoveAndResize/>
   },
   {
     name: 'Iframe',
