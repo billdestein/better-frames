@@ -18,6 +18,25 @@ enum Resizer {
   SE = 'se'
 }
 
+
+interface WrapperProps {
+  readonly $geometry: Geometry
+}
+
+const Wrapper = styled.div<WrapperProps>`
+    background-color: #EEEEEE;
+    box-sizing: border-box;
+    border: 5px solid white;
+    color: #222222;
+    outline: 1px solid black;
+    height: ${props=> props.$geometry.height}px;
+    left: ${props => props.$geometry.x}px;
+    position: absolute;
+    top: ${props => props.$geometry.y}px;
+    width: ${props => props.$geometry.width}px;
+    z-index: ${props => props.$geometry.z};
+`
+
 type Props = {
   buttons: Button[]
   canvas: Canvas
@@ -72,7 +91,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
       return
     }
 
-    if (props.isIframe && props.isIframe === true ) {
+    if (props.isIframe && props.isIframe ) {
       bodyElement.style.display = 'none'
     }
 
@@ -143,7 +162,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
       return
     }
 
-    if (props.isIframe && props.isIframe === true ) {
+    if (props.isIframe && props.isIframe ) {
       bodyElement.style.display = 'block'
     }
 
@@ -176,7 +195,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
       return
     }
 
-    if (props.isIframe && props.isIframe === true ) {
+    if (props.isIframe && props.isIframe ) {
       bodyElement.style.display = 'block'
     }
 
@@ -256,7 +275,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
       return
     }
 
-    if (props.isIframe && props.isIframe === true ) {
+    if (props.isIframe && props.isIframe ) {
       bodyElement.style.display = 'none'
     }
 
@@ -382,7 +401,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
       return
     }
 
-    if (props.isIframe && props.isIframe === true) {
+    if (props.isIframe && props.isIframe) {
       bodyElement.style.display = 'block'
     }
 
@@ -415,7 +434,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
       return
     }
 
-    if (props.isIframe && props.isIframe === true) {
+    if (props.isIframe && props.isIframe) {
       bodyElement.style.display = 'block'
     }
 
@@ -491,19 +510,19 @@ const Frame: React.FunctionComponent<Props> = (props) => {
   //----------------------------------------------------------------------------------------------
   // styles
   //----------------------------------------------------------------------------------------------
-  const Wrapper = styled.div`
-    background-color: #EEEEEE;
-    box-sizing: border-box;
-    border: 5px solid white;
-    color: #222222;
-    outline: 1px solid black;
-    height: ${geometry.height}px;
-    left: ${geometry.x}px;
-    position: absolute;
-    top: ${geometry.y}px;
-    width: ${geometry.width}px;
-    z-index: ${geometry.z};
-  `
+  // const Wrapper = styled.div`
+  //   background-color: #EEEEEE;
+  //   box-sizing: border-box;
+  //   border: 5px solid white;
+  //   color: #222222;
+  //   outline: 1px solid black;
+  //   height: ${geometry.height}px;
+  //   left: ${geometry.x}px;
+  //   position: absolute;
+  //   top: ${geometry.y}px;
+  //   width: ${geometry.width}px;
+  //   z-index: ${geometry.z};
+  // `
 
   const Content = styled.div`
     display: flex;
@@ -612,7 +631,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
   const { children } = props
 
   const renderBodyCover = () : React.JSX.Element | null => {
-    if (props.isIframe && props.isIframe === true ) {
+    if (props.isIframe && props.isIframe ) {
       return (<BodyCover className={'BodyCover'}/>)
     } else {
       return null
@@ -620,7 +639,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
   }
 
   return (
-    <Wrapper id={wrapperId}>
+    <Wrapper $geometry={geometry} id={wrapperId}>
       <Content>
         <NW role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.NW)} />
         <N role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.N)} />
