@@ -43,6 +43,22 @@ const FrameBody = styled.div`
     position: relative;
   `
 
+interface NWProps {
+  readonly $minusThicknessPX: string
+  readonly $thicknessPX: string
+}
+
+
+const NW = styled.div<NWProps>`
+    position: absolute;
+    cursor: nwse-resize;
+    top: ${props => props.$minusThicknessPX};
+    left: ${props => props.$minusThicknessPX};
+    height: ${props => props.$thicknessPX};
+    width: ${props => props.$thicknessPX};
+    z-index: 2;
+`
+
 interface WrapperProps {
   readonly $geometry: Geometry
 }
@@ -534,23 +550,15 @@ const Frame: React.FunctionComponent<Props> = (props) => {
   //----------------------------------------------------------------------------------------------
   // styles
   //----------------------------------------------------------------------------------------------
-  // const BodyCover = styled.div`
-  //   height: ${geometry.height}px;
-  //   left: 0;
+  // const NW = styled.div`
   //   position: absolute;
-  //   top: 0;
-  //   width: ${geometry.width}px;
+  //   cursor: nwse-resize;
+  //   top: ${minusThicknessPX};
+  //   left: ${minusThicknessPX};
+  //   height: ${thicknessPX};
+  //   width: ${thicknessPX};
+  //   z-index: 2;
   // `
-
-  const NW = styled.div`
-    position: absolute;
-    cursor: nwse-resize;
-    top: ${minusThicknessPX};
-    left: ${minusThicknessPX};
-    height: ${thicknessPX};
-    width: ${thicknessPX};
-    z-index: 2;
-  `
 
   const N = styled.div`
     position: absolute;
@@ -638,7 +646,12 @@ const Frame: React.FunctionComponent<Props> = (props) => {
   return (
     <Wrapper $geometry={geometry} id={wrapperId}>
       <Content>
-        <NW role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.NW)} />
+        <NW
+          role="button"
+          onPointerDown={(e) => resizePointerDown(e, Resizer.NW)}
+          $thicknessPX={thicknessPX}
+          $minusThicknessPX={minusThicknessPX}
+        />
         <N role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.N)} />
         <NE role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.NE)} />
         <W role="button" onPointerDown={(e) => resizePointerDown(e, Resizer.W)} />
