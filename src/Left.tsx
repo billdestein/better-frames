@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { AddRemove } from './examples/AddRemove'
 import { Iframe } from './examples/Iframe'
@@ -14,12 +14,6 @@ const examples: Example[] = [
     element: <Iframe/>
   }
 ]
-
-const Container = styled.div`
-      display: flex;
-      flex-direction: row;
-      height: 100vh;
-`
 
 const LeftNav = styled.div`
     background-color: blue;
@@ -52,17 +46,9 @@ export const Left: React.FunctionComponent<Props> = (props) => {
     )
   }
 
-  const renderLeftNav = () => {
-    return (
-      <LeftNav>
-        { examples.map(e => renderOption(e))}
-      </LeftNav>
-    )
-  }
-
   return (
-    <Container>
-      { renderLeftNav() }
-    </Container>
+    <LeftNav>
+      { examples.map(e => renderOption(e))}
+    </LeftNav>
   )
 }
