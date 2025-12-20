@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 import { Example } from "./types";
+
+const Container = styled.div`
+    height: 100vh;
+`
 
 interface Props {
   example: Example | null
@@ -29,8 +34,8 @@ export const Right: React.FunctionComponent<Props> = (props) => {
   }
 
   return (
-    <div ref={containerRef} id="container">
+    <Container ref={containerRef} id="container">
       { renderContents() }
-    </div>
+    </Container>
   );
 }

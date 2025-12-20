@@ -1,5 +1,5 @@
 import React from 'react'
-import { debounce } from 'lodash'
+import {debounce, wrap} from 'lodash'
 import type { ReactElement } from 'react'
 import styled from 'styled-components'
 import Canvas from './Canvas'
@@ -239,8 +239,26 @@ const Frame: React.FunctionComponent<Props> = (props) => {
     const mouseX: number = event.clientX
     const mouseY: number = event.clientY
 
-    const newWrapperX = wrapperStartX + (mouseX - mouseStartX)
-    const newWrapperY = wrapperStartY + (mouseY - mouseStartY)
+    let newWrapperX = wrapperStartX + (mouseX - mouseStartX)
+    let newWrapperY = wrapperStartY + (mouseY - mouseStartY)
+
+    console.log(`mouseX: ${mouseX}, newWrapperX: ${newWrapperX}`)
+
+    if (newWrapperY < 0) {
+      newWrapperY = 0;
+    }
+
+    if (newWrapperY > canvasElement.offsetHeight - wrapperElement.offsetHeight - 30) {
+      newWrapperY = canvasElement.offsetHeight - wrapperElement.offsetHeight - 30;
+    }
+
+    if (newWrapperX < 0) {
+      newWrapperX = 0
+    }
+
+    if (newWrapperX + wrapperElement.offsetWidth > canvasElement.offsetWidth - 30) {
+      newWrapperX = canvasElement.offsetWidth - wrapperElement.offsetWidth - 30
+    }
 
     setLeft(wrapperElement, newWrapperX)
     setTop(wrapperElement, newWrapperY)
