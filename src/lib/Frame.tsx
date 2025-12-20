@@ -18,6 +18,30 @@ enum Resizer {
   SE = 'se'
 }
 
+interface BodyCoverProps {
+  readonly $geometry: Geometry
+}
+
+const BodyCover = styled.div<BodyCoverProps>`
+    height: ${props=> props.$geometry.height}px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: ${props=> props.$geometry.width}px;
+`
+
+const Content = styled.div`
+  display: flex;
+  flex-flow: column;
+  position: relative;
+  height: 100%;
+`
+
+const FrameBody = styled.div`
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+  `
 
 interface WrapperProps {
   readonly $geometry: Geometry
@@ -510,40 +534,13 @@ const Frame: React.FunctionComponent<Props> = (props) => {
   //----------------------------------------------------------------------------------------------
   // styles
   //----------------------------------------------------------------------------------------------
-  // const Wrapper = styled.div`
-  //   background-color: #EEEEEE;
-  //   box-sizing: border-box;
-  //   border: 5px solid white;
-  //   color: #222222;
-  //   outline: 1px solid black;
+  // const BodyCover = styled.div`
   //   height: ${geometry.height}px;
-  //   left: ${geometry.x}px;
+  //   left: 0;
   //   position: absolute;
-  //   top: ${geometry.y}px;
+  //   top: 0;
   //   width: ${geometry.width}px;
-  //   z-index: ${geometry.z};
   // `
-
-  const Content = styled.div`
-    display: flex;
-    flex-flow: column;
-    position: relative;
-    height: 100%;
-  `
-
-  const FrameBody = styled.div`
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-  `
-
-  const BodyCover = styled.div`
-    height: ${geometry.height}px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: ${geometry.width}px;
-  `
 
   const NW = styled.div`
     position: absolute;
@@ -632,7 +629,7 @@ const Frame: React.FunctionComponent<Props> = (props) => {
 
   const renderBodyCover = () : React.JSX.Element | null => {
     if (props.isIframe && props.isIframe ) {
-      return (<BodyCover className={'BodyCover'}/>)
+      return (<BodyCover $geometry={geometry} className={'BodyCover'}/>)
     } else {
       return null
     }
