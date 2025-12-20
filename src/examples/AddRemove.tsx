@@ -4,7 +4,9 @@ import Frame from '../lib/Frame'
 import { Geometry } from '../lib/types'
 
 export function AddRemove(): React.JSX.Element {
+  const div = document.getElementById('container')
   const canvas = new Canvas()
+  canvas.initialize(div)
 
   const geometry: Geometry = {
     height: 200,
@@ -12,12 +14,6 @@ export function AddRemove(): React.JSX.Element {
     x: 100,
     y: 100,
     z: 100
-  }
-
-  const canvasRef = (div: any) => {
-    if (div !== null) {
-      canvas.initialize(div)
-    }
   }
 
   return (
@@ -29,7 +25,7 @@ export function AddRemove(): React.JSX.Element {
       onResize={() => {}}
       title={'Title'}
     >
-      <div ref={canvasRef}>Div</div>
+      <div>Div</div>
     </Frame>
   )
 }

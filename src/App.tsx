@@ -27,8 +27,7 @@ function App() {
 
   const exampleSelected = (example: Example) => {
     setExample(example)
-    alert('exampleSelected')
-    console.log(JSON.stringify(example))
+    console.log('exampleSelected')
   }
 
   return (
