@@ -1,8 +1,8 @@
 {
-  "name": "@billdestein/better-frames",
+  "name": "@billdestein/react-better-frames",
   "version": "1.0.0",
-  "description": "better-frames",
-  "homepage": "https://billdestein.github.io/better-frames/",
+  "description": "react-better-frames",
+  "homepage": "https://billdestein.github.io/react-better-frames/",
   "source": "src/lib/Example.tsx",
   "types": "dist/lib/Example.d.ts",
   "main": "dist/index.js",
@@ -41,16 +41,16 @@
   "author": "Darren Cooney",
   "license": "MIT",
   "keywords": [
-    "npm better-frames",
+    "npm react-better-frames",
     "react",
     "typescript"
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/billdestein/better-frames.git"
+    "url": "git+ssh://git@github.com/billdestein/react-better-frames.git"
   },
   "bugs": {
-    "url": "https://github.com/billdestein/better-frames/issues"
+    "url": "https://github.com/billdestein/react-better-frames/issues"
   },
   "browserslist": {
     "production": [
