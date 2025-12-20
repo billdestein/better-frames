@@ -7,12 +7,12 @@ interface Props {
 
 export const Right: React.FunctionComponent<Props> = (props) => {
   const {example} = props
-  const wrapperRef = useRef(null);
-  const [ isWrapperRendered, setIsWrapperRendered ] = useState(false);
+  const containerRef = useRef(null);
+  const [ isContainerRendered, setIsContainerRendered ] = useState(false);
 
   useEffect(() => {
-    if (wrapperRef.current) {
-      setIsWrapperRendered(true);
+    if (containerRef.current) {
+      setIsContainerRendered(true);
     }
   }, []);
 
@@ -21,7 +21,7 @@ export const Right: React.FunctionComponent<Props> = (props) => {
       return <div/>
     }
 
-    if ( !isWrapperRendered ) {
+    if ( !isContainerRendered ) {
       return <div/>
     }
 
@@ -29,10 +29,8 @@ export const Right: React.FunctionComponent<Props> = (props) => {
   }
 
   return (
-    <div ref={wrapperRef} id="container">
-      <div className="wrapper-contents">
-        { renderContents() }
-      </div>
+    <div ref={containerRef} id="container">
+      { renderContents() }
     </div>
   );
 }
