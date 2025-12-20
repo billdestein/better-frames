@@ -4,6 +4,25 @@ import Canvas from './Canvas'
 import type { Button } from './types'
 import { Tooltip } from 'react-tooltip'
 
+const ButtonRow = styled.div`
+    cursor: default;
+    display: inline-block;
+    float: right;
+    height: 100%;
+    padding-right: 10px;
+`
+
+const ButtonDiv = styled.div`
+    display: inline-block;
+    height: 30px;
+    padding-left: 9px;
+    padding-right: 9px;
+    &:hover {
+      background-color: lightblue;
+      cursor: pointer;
+    }
+`
+
 type Props = {
   buttons: Button[]
   canvas: Canvas
@@ -15,25 +34,6 @@ type Props = {
 const FrameButtons: React.FunctionComponent<Props> = (props) => {
   const { buttons, canvas } = props
   const { getNextKey } = canvas
-
-  const ButtonRow = styled.div`
-    cursor: default;
-    display: inline-block;
-    float: right;
-    height: 100%;
-    padding-right: 10px;
-  `
-
-  const ButtonDiv = styled.div`
-    display: inline-block;
-    height: 30px;
-    padding-left: 9px;
-    padding-right: 9px;
-    &:hover {
-      background-color: lightblue;
-      cursor: pointer;
-    }
-  `
 
   //----------------------------------------------------------------------------------------------
   // renderButtonContent

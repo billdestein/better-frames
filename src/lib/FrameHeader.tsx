@@ -13,23 +13,28 @@ type Props = {
   title: string
 }
 
-const FrameHeader: React.FunctionComponent<Props> = (props) => {
-  const { buttons, canvas, height, onMouseDown, title } = props
-  const Header = styled.div`
+interface HeaderProps {
+  readonly $height: number
+}
+
+const Header = styled.div<HeaderProps>`
     background-color: #eeeeee;
     border-bottom: 1px solid gray;
     box-sizing: border-box;
     cursor: move;
     display: block;
-    height: ${height}px;
-    line-height: ${height}px;
-  `
+    height: ${props => props.$height}px;
+    line-height: ${props => props.$height}px;
+`
+
+const FrameHeader: React.FunctionComponent<Props> = (props) => {
+  const { buttons, canvas, height, onMouseDown, title } = props
 
   //----------------------------------------------------------------------------------------------
   //  render
   //----------------------------------------------------------------------------------------------
   return (
-    <Header onMouseDown={onMouseDown}>
+    <Header $height={height} onMouseDown={onMouseDown}>
       <FrameTitle title={title} />
       <FrameButtons canvas={canvas} buttons={buttons} />
     </Header>
