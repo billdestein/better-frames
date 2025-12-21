@@ -1,5 +1,5 @@
 import React from 'react'
-import {debounce, wrap} from 'lodash'
+import {debounce } from 'lodash'
 import type { ReactElement } from 'react'
 import styled from 'styled-components'
 import Canvas from './Canvas'

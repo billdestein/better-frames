@@ -17,8 +17,8 @@ export function MoveAndResize(): React.JSX.Element {
   canvas.initialize(div)
 
   const geometry: Geometry = {
-    height: 300,
-    width: 400,
+    height: 200,
+    width: 300,
     x: 100,
     y: 100,
     z: 100

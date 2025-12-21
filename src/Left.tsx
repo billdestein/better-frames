@@ -9,9 +9,12 @@ import ReactMarkdown from 'react-markdown'
 const moveAndResizeMarkdown = `
 # Move and resize
 &nbsp;  
-First paragraph  
+All frames can be moved and resized.  
+&nbsp;  
+To move a frame, simply grab the frame header and move your mouse.  
+&nbsp;  
+To resize a frame, simply grab on a corner or side of the mouse, and move your mouse.  
 &nbsp;    
-Second paragraph
 `
 
 const iframesMarkdown = `
