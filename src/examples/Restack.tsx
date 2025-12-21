@@ -11,33 +11,60 @@ const Content = styled.div`
     justify-content: center;
 `
 
-export function MoveAndResize(): React.JSX.Element {
+export function Restack(): React.JSX.Element {
   const div = document.getElementById('container')
   const canvas = new Canvas()
   canvas.initialize(div)
 
-  const geometry: Geometry = {
-    height: 200,
-    width: 300,
-    x: 100,
-    y: 100,
-    z: 100
+  const renderFar = (): React.JSX.Element => {
+    const geometry: Geometry = {
+      height: 200,
+      width: 300,
+      x: 100,
+      y: 100,
+      z: 100
+    }
+
+    return (
+      <Frame
+        buttons={[]}
+        canvas={canvas}
+        geometry={geometry}
+        onResize={() => {}}
+        title={'Move and Resize'}
+      >
+        <div>far</div>
+      </Frame>
+    )
   }
 
-  const renderContent = (): React.JSX.Element => {
-    return <Content>Move and Resize</Content>
+  const renderNear = (): React.JSX.Element => {
+    const geometry: Geometry = {
+      height: 200,
+      width: 300,
+      x: 100,
+      y: 100,
+      z: 200
+    }
+
+    return (
+      <Frame
+        buttons={[]}
+        canvas={canvas}
+        geometry={geometry}
+        onResize={() => {}}
+        title={'Move and Resize'}
+      >
+        <div>near</div>
+      </Frame>
+    )
   }
+
 
   return (
-    <Frame
-      buttons={[]}
-      canvas={canvas}
-      geometry={geometry}
-      onResize={() => {}}
-      title={'Move and Resize'}
-    >
-      { renderContent() }
-    </Frame>
+    <div>
+      { renderFar() }
+      { renderNear() }
+    </div>
   )
 }
-

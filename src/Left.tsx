@@ -4,6 +4,7 @@ import { Example } from './types'
 import { Iframe } from './examples/Iframe'
 import './MarkdownStyles.css';
 import { MoveAndResize } from './examples/MoveAndResize'
+import { Restack } from './examples/Restack'
 import ReactMarkdown from 'react-markdown'
 
 const moveAndResizeMarkdown = `
@@ -15,6 +16,12 @@ To move a frame, simply grab the frame header and move your mouse.
 &nbsp;  
 To resize a frame, simply grab on a corner or side of the mouse, and move your mouse.  
 &nbsp;    
+`
+
+const restackMarkdown = `
+# Restack
+&nbsp;  
+All frames can be restacked.  
 `
 
 const iframesMarkdown = `
@@ -30,6 +37,11 @@ const examples: Example[] = [
     name: 'Move and resize',
     element: <MoveAndResize/>,
     markdown: <div className="markdown-body"><ReactMarkdown>{moveAndResizeMarkdown}</ReactMarkdown></div>
+  },
+  {
+    name: 'Restack',
+    element: <Restack/>,
+    markdown: <div className="markdown-body"><ReactMarkdown>{restackMarkdown}</ReactMarkdown></div>
   },
   {
     name: 'Iframe',
