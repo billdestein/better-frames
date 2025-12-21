@@ -15,12 +15,16 @@ const LeftDiv = styled.div`
 `
 
 const MiddleDiv = styled.div`
-    background-color: tan;
-    width: 30%;
+    background-color: midnightblue;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    color: white;
+    padding: 10px;
+    width: 25%;
 `
 
 const RightDiv = styled.div`
-    background-color: green;
+    background-color: midnightblue;
     color: black;
     flex-grow: 1;
     height: 100%;
@@ -40,7 +44,7 @@ function App() {
         <Left exampleSelected={exampleSelected}/>
       </LeftDiv>
       <MiddleDiv>
-        Hello
+        { example === null ? <div/> : example.markdown }
       </MiddleDiv>
       <RightDiv>
         <Right example={example}/>

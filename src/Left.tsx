@@ -1,17 +1,28 @@
 import React from 'react'
 import styled from 'styled-components'
-import { MoveAndResize } from './examples/MoveAndResize'
-import { Iframe } from './examples/Iframe'
 import { Example } from './types'
+import { Iframe } from './examples/Iframe'
+import { MoveAndResize } from './examples/MoveAndResize'
+import ReactMarkdown from 'react-markdown'
+
+const moveAndResizeMarkdown = `
+# Heading
+`
+
+const iframeMarkdown = `
+# Heading
+`
 
 const examples: Example[] = [
   {
     name: 'Move and resize',
-    element: <MoveAndResize/>
+    element: <MoveAndResize/>,
+    markdown: <ReactMarkdown children={moveAndResizeMarkdown} />
   },
   {
     name: 'Iframe',
-    element: <Iframe/>
+    element: <Iframe/>,
+    markdown: <ReactMarkdown children={iframeMarkdown} />
   }
 ]
 
@@ -53,3 +64,6 @@ export const Left: React.FunctionComponent<Props> = (props) => {
     </LeftNav>
   )
 }
+
+
+
