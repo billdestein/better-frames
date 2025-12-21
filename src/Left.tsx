@@ -2,27 +2,32 @@ import React from 'react'
 import styled from 'styled-components'
 import { Example } from './types'
 import { Iframe } from './examples/Iframe'
+import './MarkdownStyles.css';
 import { MoveAndResize } from './examples/MoveAndResize'
 import ReactMarkdown from 'react-markdown'
 
 const moveAndResizeMarkdown = `
-# Heading
+# Move and resize
+First paragraph
+Second paragraph
 `
 
 const iframeMarkdown = `
-# Heading
+# Iframes
+First paragraph
+Second paragraph
 `
 
 const examples: Example[] = [
   {
     name: 'Move and resize',
     element: <MoveAndResize/>,
-    markdown: <ReactMarkdown children={moveAndResizeMarkdown} />
+    markdown: <div className="markdown-body"><ReactMarkdown>{moveAndResizeMarkdown}</ReactMarkdown></div>
   },
   {
     name: 'Iframe',
     element: <Iframe/>,
-    markdown: <ReactMarkdown children={iframeMarkdown} />
+    markdown: <div className="markdown-body"><ReactMarkdown>{iframeMarkdown}</ReactMarkdown></div>
   }
 ]
 
