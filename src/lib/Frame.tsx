@@ -242,8 +242,6 @@ const Frame: React.FunctionComponent<Props> = (props) => {
     let newWrapperX = wrapperStartX + (mouseX - mouseStartX)
     let newWrapperY = wrapperStartY + (mouseY - mouseStartY)
 
-    console.log(`mouseX: ${mouseX}, newWrapperX: ${newWrapperX}`)
-
     if (newWrapperY < 0) {
       newWrapperY = 0;
     }
