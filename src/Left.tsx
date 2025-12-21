@@ -8,13 +8,17 @@ import ReactMarkdown from 'react-markdown'
 
 const moveAndResizeMarkdown = `
 # Move and resize
-First paragraph
+&nbsp;  
+First paragraph  
+&nbsp;    
 Second paragraph
 `
 
-const iframeMarkdown = `
+const iframesMarkdown = `
 # Iframes
-First paragraph
+&nbsp;  
+First paragraph  
+&nbsp;    
 Second paragraph
 `
 
@@ -27,7 +31,7 @@ const examples: Example[] = [
   {
     name: 'Iframe',
     element: <Iframe/>,
-    markdown: <div className="markdown-body"><ReactMarkdown>{iframeMarkdown}</ReactMarkdown></div>
+    markdown: <div className="markdown-body"><ReactMarkdown>{iframesMarkdown}</ReactMarkdown></div>
   }
 ]
 
